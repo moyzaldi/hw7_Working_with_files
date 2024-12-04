@@ -28,9 +28,14 @@ def creating_folder_with_files():
         content = requests.get(url=download_url, headers=headers).content  # скачиваем файл
         with open(os.path.join(TMP_DIR, file), 'wb') as file:  # путь
             file.write(content)
+
+    yield
+    shutil.rmtree(TMP_DIR)
+
+
+@pytest.fixture(scope="session", autouse=True)
+def creating_arhive(creating_folder_with_files):
     with zipfile.ZipFile("tmp/multiple_files.zip", mode="w") as archive:
         for file in files:
             add_file = os.path.join(TMP_DIR, file)  # склеиваем путь к файлам которые добавляют в архив
             archive.write(add_file, os.path.basename(add_file))  # добавляем файл в архив
-    yield
-    shutil.rmtree(TMP_DIR)
