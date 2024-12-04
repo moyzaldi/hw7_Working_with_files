@@ -1,0 +1,7 @@
+pytest
+selene==2.0.0rc7
+selenium
+pypdf
+openpyxl
+pandas
+requests
